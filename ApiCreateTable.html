@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
+
+</head>
+<body>
+    <h1>Hello We are fetch Api into Ag-Grid!</h1>
+<div id="myGrid" style="height: 500px; width:650px;" class="ag-theme-alpine"></div>
+
+<button onclick="deselect()">Deselect Rows</button>
+
+
+<script type="text/javascript" charset="utf-8">
+
+    function deselect(){
+        gridOptions.api.deselectAll();
+    }
+
+const columnDefs = [
+        {headerName: 'Make', field: 'make',sortable:true , filter:true , resizable:true , editable: true},
+        {headerName: 'Model', field: 'model' ,sortable:true , filter:true , resizable:true , editable: true},
+        {headerName: 'Price', field: 'price' ,sortable:true , filter:true , resizable:true , editable: true}
+    ];
+    const gridOptions = {
+        columnDefs: columnDefs, 
+        rowSelection:'multiple',
+        animateRows :true ,
+        onCellClicked:params =>{
+            console.log('Cell Was Cicked' , params);
+        }       
+    };
+    const eGridDiv = document.querySelector('#myGrid');
+    new agGrid.Grid(eGridDiv, gridOptions);
+    fetch('https://www.ag-grid.com/example-assets/row-data.json').then(function (response) {
+        return response.json();
+    }).then(function (data) {
+        gridOptions.api.setRowData(data);
+    })
+</script>
+
+</body>
+</html>

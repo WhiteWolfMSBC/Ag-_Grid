@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
+
+</head>
+<body>
+    <h1>Hello We are fetch Api into Ag-Grid!</h1>
+<div id="myGrid" style="height: 500px; width:650px;" class="ag-theme-alpine"></div>
+
+<button onclick="deselect()">Deselect Rows</button>
+
+
+<script type="text/javascript" charset="utf-8"> 
+
+// const SimpleComp=(params) =>{ 
+//     console.log(params);
+//     return "Hello World";
+// };
+const SimpleComp=(params) => params.value;
+
+class ClassComp{
+    init(params){
+        this.eGui=document.createElement('div');
+        this.eGui.innerHTML=`
+        <button class="btn-dollar">$</button>
+        <span>${params.value}</span>`;
+
+        this.btnDollar=this.eGui.querySelector('.btn-dollar');
+
+        this.btnDollar.onclick =()=>alert('$$$' + params.value);
+
+    }
+    getGui(){
+        return this.eGui;
+    }
+    refresh(){
+        return false
+    }
+    destroy(){}
+}
+
+class ClassEle{
+    init(params){
+        this.eGui1=document.createElement('div');
+        this.eGui1.innerHTML=`
+        <button class="btn-at">${params.btnText}</button>
+        <span>${params.value}</span>`;
+
+        this.btnAt=this.eGui1.querySelector('.btn-at');
+
+        this.btnAt.onclick =()=>alert('@@@' + params.value);
+    }
+    getGui(){
+        return this.eGui1;
+    }
+    refresh(){
+        return false
+    }
+    destroy(){}
+}
+
+
+    function deselect(){
+        gridOptions.api.deselectAll();
+    }
+
+const columnDefs = [
+        {headerName: 'Make', field: 'make' , cellRenderer:SimpleComp ,sortable:true , filter:true , resizable:true , editable: true},
+        {headerName: 'Model', field: 'model' , cellRenderer:ClassComp ,sortable:true , filter:true , resizable:true , editable: true},
+        // {headerName: 'Model', field: 'model' , cellRenderer:p=>`<b> Age is:</b> ${p.value}` ,sortable:true , filter:true , resizable:true , editable: true}, Inline component
+        // {headerName: 'Model', field: 'model' , cellRendererClassEle , cellRendererParams:{btnText:"Grand"},sortable:true , filter:true , resizable:true , editable: true},
+        {headerName: 'Price', field: 'price' , cellRenderer: ClassEle , cellRendererParams:{btnText:"Amazing"} ,sortable:true , filter:true , resizable:true , editable: true}
+    ];
+    const gridOptions = {
+        columnDefs: columnDefs, 
+        rowSelection:'multiple',
+        animateRows :true ,
+        onCellClicked:params =>{
+            console.log('Cell Was Cicked' , params);
+        }       
+    };
+    const eGridDiv = document.querySelector('#myGrid');
+    new agGrid.Grid(eGridDiv, gridOptions);
+    fetch('https://www.ag-grid.com/example-assets/row-data.json').then(function (response) {
+        return response.json();
+    }).then(function (data) {
+        gridOptions.api.setRowData(data);
+    })
+</script>
+
+</body>
+</html>

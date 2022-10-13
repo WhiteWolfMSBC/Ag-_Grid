@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
+</head>
+<body>
+<h1>Hello We are creating A table!</h1>
+<div id="myGrid" style="height: 500px; width:700px;" class="ag-theme-balham"></div>
+
+<script type="text/javascript" charset="utf-8">
+    const columnDefs = [
+        {headerName: 'Sr.No',   field: 'no' , sortable:true , filter:true , resizable:true , editable: true},
+        {headerName: 'Name',    field: 'name' , sortable:true , filter:true , resizable:true , editable: true},
+        {headerName: 'College', field: 'cllg', sortable:true , filter:true , resizable:true , editable: true},
+        {headerName: 'Stream',  field: 'str', sortable:true , filter:true , resizable:true , editable: true}
+    ];
+    const rowData = [
+        {no: 1 , name: 'Sahin' , cllg: 'Mit' , str:'Cse'},
+        {no: 2 , name: 'Saurabh' , cllg: 'Kiit' , str:'Entc'},
+        {no: 3 , name: 'Ravi' , cllg: 'Iit' , str:'Mec'},
+        {no: 4 , name: 'Kriti' , cllg: 'Bhu' , str:'Eng-H'},
+        {no: 5 , name: 'Priya' , cllg: 'Ait' , str:'Civil'},
+        {no: 6 , name: 'Anuskha' , cllg: 'Nit' , str:'It'}
+    ];
+    const gridOptions = {
+        columnDefs: columnDefs,
+        rowData: rowData
+    };
+    const eGridDiv = document.querySelector('#myGrid');
+    new agGrid.Grid(eGridDiv, gridOptions);
+</script>
+</body>
+</html>

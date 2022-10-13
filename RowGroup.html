@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>JavaScript example</title>
+		<meta charSet="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<style media="only screen">
+            html, body {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                box-sizing: border-box;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            html {
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 0;
+                overflow: auto;
+            }
+
+            body {
+                padding: 1rem;
+                overflow: auto;
+            }
+        </style>
+	</head>
+	<body>
+		<div id="myGrid" style="height: 100%" class="ag-theme-alpine">
+		</div>
+		<script>var __basePath = './';</script>
+        <script src="https://unpkg.com/ag-grid-enterprise@28.2.0/dist/ag-grid-enterprise.min.js"></script>
+            <link rel="stylesheet" href="https://unpkg.com/ag-grid-enterprise/dist/styles/ag-grid.css">
+            <link rel="stylesheet" href="https://unpkg.com/ag-grid-enterprise/dist/styles/ag-theme-alpine.css">
+		<script>
+            
+const gridOptions = {
+  columnDefs: [
+    { field: 'country', rowGroup: true, hide: true },
+    { field: 'year', rowGroup: true, hide: true },
+    { field: 'athlete' },
+    { field: 'sport' },
+    { field: 'gold' },
+    { field: 'silver' },
+    { field: 'bronze' },
+  ],
+  defaultColDef: {
+    flex: 1,
+    minWidth: 100,
+    sortable: true,
+    resizable: true,
+    cellRendererParams:{
+        supressCount:true,
+        checkbox:true,
+        innerRenderer : p=>'<b>'+p.value+'</b>'
+    }
+  },
+  autoGroupColumnDef: {
+    minWidth: 200,
+  },
+  animateRows: true,
+};
+
+// setup the grid after the page has finished loading
+document.addEventListener('DOMContentLoaded', function () {
+  var gridDiv = document.querySelector('#myGrid');
+  new agGrid.Grid(gridDiv, gridOptions);
+
+  fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
+    .then((response) => response.json())
+    .then((data) => gridOptions.api.setRowData(data));
+});
+		</script>
+	</body>
+</html>

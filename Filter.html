@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>JavaScript example</title>
+		<meta charSet="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<style media="only screen">
+            html, body {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                box-sizing: border-box;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            html {
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 0;
+                overflow: auto;
+            }
+
+            body {
+                padding: 1rem;
+                overflow: auto;
+            }
+        </style>
+	</head>
+	<body>
+		<div id="myGrid" style="height: 100%" class="ag-theme-balham"></div>
+
+        <button onclick="onsave()">Save</button>
+        <button onclick="onApply()">Apply</button>
+
+
+		<script>
+
+function onsave(){
+    saveFilterModel=gridOptions.api.getFilterModel();
+    console.log('saving filter state' , saveFilterModel);
+}
+
+function onApply(){
+    gridOptions.api.setFilterModel(saveFilterModel);
+    console.log('Applying Filter State' , saveFilterModel);
+}
+
+
+            
+const gridOptions = {
+  columnDefs: [
+    { field: 'country', filter:'agTextColumnFilter' },
+    { field: 'year', filter:'agNumberColumnFilter'},
+    { field: 'athlete' , filterParams:{ debounceMS : 0}},
+    { field: 'sport' },
+    { field: 'gold' },
+    { field: 'silver' },
+    { field: 'bronze' },
+  ],
+  defaultColDef: {
+    flex: 1,
+    minWidth: 100,
+    sortable: true,
+    pagination:true,
+    filter:true,
+    editable:true,
+    resizable: true,
+    animateRows: true,
+    floatingFilter:true,
+    filterParams:{
+        buttons:["apply" , "clear", "cancel" , "reset"]
+    }
+    }
+  }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  var gridDiv = document.querySelector('#myGrid');
+  new agGrid.Grid(gridDiv, gridOptions);
+
+  fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
+    .then((response) => response.json())
+    .then((data) => gridOptions.api.setRowData(data));
+});
+		</script>
+
+
+
+<script>var __basePath = './';</script>
+<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
+	</body>
+</html>
